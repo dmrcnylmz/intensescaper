@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: intensescaper-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: intensescaper
+      MYSQL_USER: intensescaper
+      MYSQL_PASSWORD: intensescaper123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - intensescaper-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: intensescaper-app
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/intensescaper?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: intensescaper
+      SPRING_DATASOURCE_PASSWORD: intensescaper123
+      SELENIUM_CHROME_DRIVER_PATH: /usr/bin/chromedriver
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - intensescaper-network
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+
+networks:
+  intensescaper-network:
+    driver: bridge
+

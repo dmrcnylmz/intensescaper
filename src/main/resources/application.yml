@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: veribot-backend
+  
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  
+  jackson:
+    time-zone: Europe/Istanbul
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+
+# JWT Configuration
+jwt:
+  secret: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+  expiration: 86400000 # 24 saat (millisaniye)
+
+# Selenium Configuration
+selenium:
+  chrome:
+    headless: true
+    page-load-timeout: 30
+    implicit-wait: 10
+    # WebDriverManager otomatik olarak ChromeDriver'ı yönetir, driver-path gerekmez
+
+# Async Configuration
+async:
+  core-pool-size: 5
+  max-pool-size: 10
+  queue-capacity: 100
+
+# WhatsApp Configuration (Simulated for now)
+whatsapp:
+  api:
+    enabled: false
+    url: https://api.whatsapp.com/send
+    token: dummy-token
+  message:
+    delay-ms: 2000
+    max-retry: 3
+
+# Logging
+logging:
+  level:
+    com.intensescaper: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+playwright:
+  enabled: false  # Using Selenium with anti-detection instead
+  headless: true
+  navigation-timeout-ms: 45000
+  wait-after-navigation-min-ms: 800
+  wait-after-navigation-max-ms: 1500
+  human:
+    scroll-steps: 5
+    scroll-delay-ms: 400
+  session:
+    bootstrap-enabled: true
+    bootstrap-url: https://www.sahibinden.com
+    persist-cookies: true
+

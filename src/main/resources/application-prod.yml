@@ -1,0 +1,95 @@
+spring:
+  application:
+    name: intensescaper-backend
+  
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/intensescaper}
+    username: ${SPRING_DATASOURCE_USERNAME:intensescaper}
+    password: ${SPRING_DATASOURCE_PASSWORD:intensescaper123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  
+  jackson:
+    time-zone: Europe/Istanbul
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437}
+  expiration: 86400000
+
+# Selenium Configuration
+selenium:
+  chrome:
+    headless: true
+    page-load-timeout: 30
+    implicit-wait: 10
+    user-agents: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15,Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+    proxy:
+    proxies:
+    use-stealth: true
+
+scraper:
+  sahibinden:
+    mode: remote
+    max-list-items: 8
+    page-wait-ms: 9000
+    detail-wait-ms: 3000
+    max-retry: 3
+    random-wait-enabled: true
+    mobile-fallback-enabled: true
+    list-scroll-steps: 5
+    scroll-wait-ms: 1500
+
+# Async Configuration
+async:
+  core-pool-size: 5
+  max-pool-size: 10
+  queue-capacity: 100
+
+# WhatsApp Configuration
+whatsapp:
+  api:
+    enabled: false
+    url: https://api.whatsapp.com/send
+    token: dummy-token
+  message:
+    delay-ms: 2000
+    max-retry: 3
+
+# Logging
+logging:
+  level:
+    com.intensescaper: INFO
+    org.springframework.security: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+playwright:
+  enabled: true
+  headless: true
+  navigation-timeout-ms: 50000
+  wait-after-navigation-min-ms: 900
+  wait-after-navigation-max-ms: 1600
+  human:
+    scroll-steps: 6
+    scroll-delay-ms: 450
+  session:
+    bootstrap-enabled: true
+    bootstrap-url: https://www.sahibinden.com
+    persist-cookies: true
+
